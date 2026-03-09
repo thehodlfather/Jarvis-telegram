@@ -23,17 +23,14 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.message.chat_id
     user_text = update.message.text
 
-    # Inicializar historial si es nuevo usuario
     if user_id not in conversation_history:
         conversation_history[user_id] = []
 
-    # Agregar mensaje del usuario al historial
     conversation_history[user_id].append({
         "role": "user",
         "content": user_text
     })
 
-    # Mantener solo los últimos 10 mensajes para no gastar tokens
     if len(conversation_history[user_id]) > 10:
         conversation_history[user_id] = conversation_history[user_id][-10:]
 
@@ -47,7 +44,6 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         assistant_reply = response.content[0].text
 
-        # Guardar respuesta en el historial
         conversation_history[user_id].append({
             "role": "assistant",
             "content": assistant_reply
